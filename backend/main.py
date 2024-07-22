@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException, Depends, Header
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from mangum import Mangum
 from src.database import get_databases, get_database_connection
 from src.schemas import QueryRequest, QueryResponse, LoginRequest, DatabaseConnectionInfo
 from src.services.query_service import QueryService
@@ -13,13 +14,13 @@ security = HTTPBasic()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["https://your-frontend-domain.vercel.app"],  # Update this with your frontend URL
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-@app.post("/login")
+@app.post("/api/login")
 async def login(login_request: LoginRequest):
     try:
         connection = get_database_connection(
@@ -27,13 +28,12 @@ async def login(login_request: LoginRequest):
             login_request.username,
             login_request.password
         )
-        print(connection)
         connection.close()
         return {"message": "Login successful"}
     except Exception as e:
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
-@app.get("/databases")
+@app.get("/api/databases")
 async def list_databases(credentials: HTTPBasicCredentials = Depends(security)):
     try:
         databases = get_databases("localhost", credentials.username, credentials.password)
@@ -41,7 +41,7 @@ async def list_databases(credentials: HTTPBasicCredentials = Depends(security)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/query", response_model=QueryResponse)
+@app.post("/api/query", response_model=QueryResponse)
 async def query_data(request: QueryRequest, credentials: HTTPBasicCredentials = Depends(security),
                      x_host: str = Header(..., alias="X-Host")):
     try:
@@ -62,6 +62,8 @@ async def query_data(request: QueryRequest, credentials: HTTPBasicCredentials = 
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+handler = Mangum(app)
 
 if __name__ == "__main__":
     import uvicorn
