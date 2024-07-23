@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import './App.css';
 import AboutPage from './components/AboutPage';
-import ChatPage from './components/ChatPage';
 import ContactPage from './components/ContactPage';
 import DashboardPage from './components/DashboardPage';
 import DatabaseSelector from './components/DatabaseSelector';
