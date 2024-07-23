@@ -21,6 +21,19 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [connectionInfo, setConnectionInfo] = useState(null);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/endpoint`);
+        const data = await response.json();
+        setApiData(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <Router>
