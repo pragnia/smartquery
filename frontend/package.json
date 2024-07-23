@@ -13,6 +13,7 @@
     "axios": "^1.7.2",
     "emailjs-com": "^3.2.0",
     "framer-motion": "^11.3.8",
+    "gh-pages": "^6.1.1",
     "lucide-react": "^0.407.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -24,9 +25,12 @@
     "styled-components": "^6.1.12",
     "web-vitals": "^2.1.4"
   },
+  "homepage": "https://pragnia.github.io/smartquery",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
