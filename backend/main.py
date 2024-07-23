@@ -14,7 +14,7 @@ security = HTTPBasic()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://your-frontend-domain.vercel.app"],  # Update this with your frontend URL
+    allow_origins=["https://assistance-i9tkzqycp-pragnias-projects.vercel.app"],  # Update this with your frontend URL
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
